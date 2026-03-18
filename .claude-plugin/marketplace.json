@@ -1,0 +1,18 @@
+{
+  "name": "undefdev-token-efficiency",
+  "description": "Marketplace for the token-efficiency skill",
+  "owner": {
+    "name": "Tarek Sabet"
+  },
+  "plugins": [
+    {
+      "name": "token-efficiency",
+      "description": "Minimize token waste in all bash, file, and data processing operations",
+      "version": "1.0.0",
+      "source": "./",
+      "author": {
+        "name": "Tarek Sabet"
+      }
+    }
+  ]
+}
