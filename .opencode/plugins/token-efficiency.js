@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, statSync } from "fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -10,6 +10,7 @@ export default {
   name: "token-efficiency",
   skills: readdirSync(skillsDir)
     .filter((d) => statSync(join(skillsDir, d)).isDirectory())
+    .filter((d) => existsSync(join(skillsDir, d, "SKILL.md")))
     .map((d) => ({
       name: d,
       path: join(skillsDir, d, "SKILL.md"),

@@ -1,11 +1,8 @@
 ---
 name: token-efficiency
 description: >
-  Minimize token waste in all bash, file, and data processing operations.
-  ALWAYS apply these principles whenever executing commands, reading files,
-  or processing output. This skill governs how an LLM agent interacts with
-  the system — it applies to every task involving tool use, file reading,
-  data extraction, or shell commands. Trigger on any computer use whatsoever.
+  Minimize token waste in all tool use, file reading, and data processing.
+  Applies to every task involving shell commands, file I/O, or structured data.
 ---
 
 # Token-Efficient Computer Use
@@ -15,7 +12,7 @@ Every character of stdout returned from a tool call gets tokenized and billed. A
 1. **Can I avoid this call entirely?** If the information is already in context from a previous read or from the user, use it.
 2. **If I must call, how do I minimize the bytes returned?** Filter, project, truncate, or count at the source rather than dumping raw output.
 
-A related cost: output tokens are ~4x more expensive than input tokens. This doesn't mean you should cut corners on reasoning or planning — think as much as you need to. But if you're writing a file character by character that a tool could generate, or writing a long Python script to do what a shell one-liner could, you're paying 4x for unnecessary verbosity.
+A related cost: output tokens are typically 2-5x more expensive than input tokens (varies by model). This doesn't mean you should cut corners on reasoning or planning — think as much as you need to. But if you're writing a file character by character that a tool could generate, or writing a long Python script to do what a shell one-liner could, you're paying a multiple for unnecessary verbosity.
 
 ---
 

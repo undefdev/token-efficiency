@@ -10,7 +10,7 @@
 2. **Create the skills symlink:**
    ```bash
    mkdir -p ~/.agents/skills
-   ln -s ~/.codex/token-efficiency/skills ~/.agents/skills/token-efficiency
+   ln -s ~/.codex/token-efficiency/skills/token-efficiency ~/.agents/skills/token-efficiency
    ```
 
 3. **Restart Codex** to discover the skills.
