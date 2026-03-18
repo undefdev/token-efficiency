@@ -31,7 +31,7 @@ Then install:
 
 ### Cursor
 
-Search for `token-efficiency` in the Cursor Marketplace panel, or browse [cursor.com/marketplace](https://cursor.com/marketplace).
+Not yet available on the Cursor Marketplace. For now, clone the repo and add the skill content to your project's rules manually.
 
 ### Gemini CLI
 
