@@ -6,8 +6,8 @@
   "author": {
     "name": "Tarek Sabet"
   },
-  "homepage": "https://github.com/tarek-sabet/token-efficiency",
-  "repository": "https://github.com/tarek-sabet/token-efficiency",
+  "homepage": "https://github.com/undefdev/token-efficiency",
+  "repository": "https://github.com/undefdev/token-efficiency",
   "license": "MIT",
   "keywords": ["token-efficiency", "cost-optimization", "agent-tools", "shell"],
   "skills": "./skills/"

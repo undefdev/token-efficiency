@@ -4,7 +4,7 @@
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/tarek-sabet/token-efficiency.git ~/.codex/token-efficiency
+   git clone https://github.com/undefdev/token-efficiency.git ~/.codex/token-efficiency
    ```
 
 2. **Create the skills symlink:**

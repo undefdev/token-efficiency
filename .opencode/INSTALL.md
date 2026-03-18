@@ -6,7 +6,7 @@ Add token-efficiency to the `plugin` array in your `opencode.json`:
 
 ```json
 {
-  "plugin": ["token-efficiency@git+https://github.com/tarek-sabet/token-efficiency.git"]
+  "plugin": ["token-efficiency@git+https://github.com/undefdev/token-efficiency.git"]
 }
 ```
 
@@ -18,7 +18,7 @@ Restarts automatically pull the latest version. To pin a version:
 
 ```json
 {
-  "plugin": ["token-efficiency@git+https://github.com/tarek-sabet/token-efficiency.git#v1.0.0"]
+  "plugin": ["token-efficiency@git+https://github.com/undefdev/token-efficiency.git#v1.0.0"]
 }
 ```
 

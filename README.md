@@ -20,7 +20,8 @@ Every byte of tool output is money and context window spent. This skill instills
 ### Claude Code
 
 ```
-/install token-efficiency
+/plugin marketplace add undefdev/token-efficiency
+/plugin install token-efficiency@undefdev-token-efficiency
 ```
 
 ### Cursor
@@ -32,7 +33,7 @@ Every byte of tool output is money and context window spent. This skill instills
 ### Gemini CLI
 
 ```bash
-gemini extensions install https://github.com/tarek-sabet/token-efficiency
+gemini extensions install https://github.com/undefdev/token-efficiency
 ```
 
 ### Codex
