@@ -1,0 +1,6 @@
+{
+  "name": "token-efficiency",
+  "description": "Minimize token waste in all bash, file, and data processing operations",
+  "version": "1.0.0",
+  "contextFileName": "GEMINI.md"
+}

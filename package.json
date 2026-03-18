@@ -1,0 +1,6 @@
+{
+  "name": "token-efficiency",
+  "version": "1.0.0",
+  "type": "module",
+  "main": ".opencode/plugins/token-efficiency.js"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "token-efficiency",
+  "displayName": "Token Efficiency",
+  "description": "Minimize token waste in all bash, file, and data processing operations",
+  "version": "1.0.0",
+  "author": {
+    "name": "Tarek Sabet"
+  },
+  "homepage": "https://github.com/tarek-sabet/token-efficiency",
+  "repository": "https://github.com/tarek-sabet/token-efficiency",
+  "license": "MIT",
+  "keywords": ["token-efficiency", "cost-optimization", "agent-tools", "shell"],
+  "skills": "./skills/"
+}
