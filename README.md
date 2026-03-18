@@ -31,9 +31,7 @@ Then install:
 
 ### Cursor
 
-```
-/add-plugin token-efficiency
-```
+Search for `token-efficiency` in the Cursor Marketplace panel, or browse [cursor.com/marketplace](https://cursor.com/marketplace).
 
 ### Gemini CLI
 
