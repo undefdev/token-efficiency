@@ -19,8 +19,13 @@ Every byte of tool output is money and context window spent. This skill instills
 
 ### Claude Code
 
+First, add the marketplace:
 ```
 /plugin marketplace add undefdev/token-efficiency
+```
+
+Then install:
+```
 /plugin install token-efficiency@undefdev-token-efficiency
 ```
 
