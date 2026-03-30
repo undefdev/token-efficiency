@@ -1,8 +1,10 @@
 ---
 name: token-efficiency
 description: >
-  Minimize token waste in all tool use, file reading, and data processing.
-  Applies to every task involving shell commands, file I/O, or structured data.
+  Minimize token waste in all bash, file, and data processing operations.
+  ALWAYS apply these principles whenever executing commands, reading files, or processing output.
+  This skill governs how an LLM agent interacts with the system — it applies to every task involving tool use, file reading, data processing, or shell commands.
+  TRIGGER on any computer use whatsoever.
 ---
 
 # Token-Efficient Computer Use

@@ -10,5 +10,6 @@
   "repository": "https://github.com/undefdev/token-efficiency",
   "license": "MIT",
   "keywords": ["token-efficiency", "cost-optimization", "agent-tools", "shell"],
-  "skills": "./skills/"
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks-cursor.json"
 }
