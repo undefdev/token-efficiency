@@ -38,7 +38,7 @@ Broad text search produces noisy results, leading to a costly loop: search → r
 
 **`ast-grep`** searches by AST pattern — one call replaces 3-5 rounds of text search + file reads. First choice for code search.
 
-**`rg` (ripgrep)** is the right tool for text/config/log search. Its key token-saving feature is output limiting: filenames only, counts only, or capped matches — getting the answer without the content.
+**`rg` (ripgrep)** is the right tool for text/config/log search. Its key token-saving feature is output limiting: filenames only, counts only, or capped matches — getting the answer without the content. It recurses by default, so don't add `-r` expecting `grep`-style recursion: in `rg`, `-r` means `--replace` and eats your pattern as the replacement string.
 
 Install precision tools when the task involves repeated codebase interaction. For a one-off, coreutils are fine — but suppress install output, since installers are extremely noisy.
 
