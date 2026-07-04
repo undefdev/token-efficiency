@@ -6,8 +6,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-# Read the skill content
-skill_content=$(cat "${PLUGIN_ROOT}/skills/token-efficiency/SKILL.md" 2>&1 || echo "Error reading token-efficiency skill")
+# Inject only the compact core rules (~200 tokens); the full SKILL.md loads
+# on demand via the harness's skill mechanism — practicing the progressive
+# disclosure the skill itself preaches.
+skill_content=$(cat "${PLUGIN_ROOT}/skills/token-efficiency/CORE.md" 2>&1 || echo "Error reading token-efficiency core rules")
 
 # Escape string for JSON embedding
 escape_for_json() {
