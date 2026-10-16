@@ -1,91 +1,43 @@
 ---
 name: token-efficiency
-description: >
-  Minimize token waste in all bash, file, and data processing operations.
-  ALWAYS apply these principles whenever executing commands, reading files, or processing output.
-  This skill governs how an LLM agent interacts with the system — it applies to every task involving tool use, file reading, data processing, or shell commands.
-  TRIGGER on any computer use whatsoever.
+description: Reduce token waste when reading or searching files, querying structured data, inspecting diffs, or handling verbose tool output.
 ---
 
 # Token-Efficient Computer Use
 
-Every character of stdout returned from a tool call gets tokenized and billed. A single careless `cat` on a 2000-line JSON file costs as much as a thoughtful conversation turn. The goal isn't to memorize specific commands — it's to internalize a simple cost model: **each byte of tool output is money and context window spent**, and each tool call has fixed round-trip overhead on top of that. Two questions should precede every tool call:
+Optimize total cost and time to a verified result. Smaller outputs help when they preserve the evidence needed to finish correctly; extra searches, retries, and coordination can erase the savings.
 
-1. **Can I avoid this call entirely?** If the information is already in context from a previous read or from the user, use it.
-2. **If I must call, how do I minimize the bytes returned?** Filter, project, truncate, or count at the source rather than dumping raw output.
+Before a tool call, ask whether current evidence already answers the question and what information the next decision actually needs.
 
-A related cost: output tokens are typically 2-5x more expensive than input tokens (varies by model). This doesn't mean you should cut corners on reasoning or planning — think as much as you need to. But if you're writing a file character by character that a tool could generate, or writing a long Python script to do what a shell one-liner could, you're paying a multiple for unnecessary verbosity.
+## Read selectively and expand when needed
 
----
+- Use available filtered reads and searches that fit the task and the harness's tool guidance. Use shell pipelines for data transformations and queries the native tools do not cover.
+- Locate files or symbols with filenames, counts, or bounded matches, then read relevant spans and dependencies. Expand when the result is ambiguous. A capped or truncated search does not establish that other matches are absent.
+- Use AST search for structural code patterns and text search for literals, configuration, or logs. Do not install a new search tool unless repeated use justifies the setup.
+- `rg` recurses by default. Its `-r` flag means `--replace`, not recursion. Its `-m` match limit applies per file, not across the entire search.
+- For broad Git changes, start with `git diff --stat` or `--name-only`, then inspect relevant files. Read a small, targeted diff directly.
 
-## Use structured query tools, not dump-and-read
+## Query and generate at the source
 
-The single biggest source of token waste is printing an entire structured file to extract a few fields. Structured data has purpose-built query tools that return only what you ask for:
+- Project JSON with `jq`; use format-aware tools for YAML, TOML, and XML. Check which `yq` implementation is installed before relying on its options.
+- Use `cut` or `awk` for simple delimited text; use a CSV-aware parser for quoted fields or embedded newlines. Choose a compact format that preserves the data's structure.
+- Generate repetitive content, conversions, and mechanical edits with a short script when that is simpler and more reliable than emitting the result manually. Choose the language for correctness, not a blanket preference for shell or Python.
 
-**JSON → `jq`**: A `curl` response piped through `jq '.data[] | {id, status}'` might return 200 bytes where the raw payload was 15KB. This applies to any JSON — API responses, config files, build manifests. If you're reaching for `python -c "import json; ..."`, use `jq` instead. Use `jq -c` for compact single-line output when you don't need readability.
+## Reduce noise without losing evidence
 
-**YAML/TOML/XML → `yq`**: Same principle. `yq '.services | keys' docker-compose.yml` returns a short list where `cat` returns the entire file. Handles TOML and XML too (`-p toml`, `-p xml`).
+- Use quiet flags and disable color where supported, while retaining failure diagnostics.
+- Save unpredictable or verbose output to a file and inspect relevant sections. Reuse output the harness already persisted instead of rerunning the command solely to recover it.
+- Preserve the original command's exit status when capturing or piping output; a successful formatter does not prove the command succeeded.
+- Retain exact errors, relevant constraints, failed approaches, and paths or URLs needed to recover details. Recheck evidence when the underlying state changes.
 
-**CSV/TSV → `awk`, `cut`, `head`**: Use `head -n 6` to peek at structure, `cut` to project columns, `awk` for aggregation. Prefer CSV over JSON for tabular output when you control the format — ~40-50% fewer tokens.
+## Account for execution overhead
 
-The general principle: if a format has a query language or projection tool, use it. This extends to databases (`sqlite3` with a SELECT), parquet files (`duckdb`), etc.
+- Run independent calls in parallel when supported and permitted. Chain dependent commands with `&&` when useful, keeping approval boundaries clear.
+- Prefer completion notifications to polling. If polling is necessary, use metadata or hashes when they answer the question more cheaply than rereading the content.
+- Delegate substantial, separable work when isolation or parallelism justifies setup and coordination. A smaller parent context does not imply lower total cost: include child-agent usage, and request conclusions with references to supporting evidence.
 
----
+## Preserve useful context and cache reuse
 
-## Prefer precision search tools
+Keep prompt prefixes stable where practical and avoid unnecessary changes to prompt-affecting configuration. Cache behavior and pricing depend on the provider and model.
 
-Broad text search produces noisy results, leading to a costly loop: search → read file → wrong match → search again. Precision tools short-circuit this:
-
-**`ast-grep`** searches by AST pattern — one call replaces 3-5 rounds of text search + file reads. First choice for code search.
-
-**`rg` (ripgrep)** is the right tool for text/config/log search. Its key token-saving feature is output limiting: filenames only, counts only, or capped matches — getting the answer without the content. It recurses by default, so don't add `-r` expecting `grep`-style recursion: in `rg`, `-r` means `--replace` and eats your pattern as the replacement string.
-
-Install precision tools when the task involves repeated codebase interaction. For a one-off, coreutils are fine — but suppress install output, since installers are extremely noisy.
-
----
-
-## Git: summarize before you diff
-
-`git diff` on a multi-file change easily dumps thousands of lines into context. Start with a summary and then selectively inspect:
-
-```bash
-git diff --stat                    # which files changed and by how much
-git diff -- path/to/specific.py   # only the file you care about
-git diff --name-only               # just filenames
-```
-
-The same applies to `git show`, `git log -p`, and any diff-producing command. Default to `--stat` or `--name-only` first, then narrow down to the files that matter.
-
----
-
-## Suppress output noise at the source
-
-The default verbosity of most tools exists for interactive human use. Agents rarely need it.
-
-**Use quiet/silent flags.** `-q` for pip/pytest, `--silent` for npm, `-s` for make, `--oneline` for git log. Know what you need from the output and ask for only that.
-
-**Disable color.** Set `NO_COLOR=1` as an environment variable or use `--no-color` flags. Colored output adds 20-30% token overhead from ANSI escape codes.
-
-**Redirect and inspect selectively.** For commands with unpredictable output volume, redirect to a temp file, check the size with `wc -l`, then read only the relevant parts.
-
-**Batch with `&&`.** Each tool call has fixed round-trip overhead. Three commands chained with `&&` cost one round-trip instead of three.
-
----
-
-## Track changes with hashes, not re-reads
-
-Agents often poll files waiting for builds, server output, or code generation to complete. Re-reading the file each time wastes tokens when it hasn't changed. Compare hashes instead — the output is a few bytes regardless of file size:
-
-```bash
-md5sum output.json > /tmp/prev.md5
-# ... poll ...
-md5sum -c /tmp/prev.md5 --quiet 2>/dev/null && echo "unchanged" || echo "changed"
-```
-
-This extends to directories with `find ... -exec md5sum {} + | sort` compared against a saved snapshot.
-
----
-
-## Prefer coreutils over Python for simple transforms
-
-If the transform is a single pipeline stage — filter, project, count, replace, sort — coreutils are both shorter to write and produce less output than equivalent Python. `wc -l` vs `python -c "print(len(open('f').readlines()))"`. `sed 's/old/new/g'` vs a Python regex one-liner. Reach for Python when you need multi-step logic, data structures, or libraries.
+Use the harness's compaction or context-management mechanisms when needed. Preserve the task's constraints, verified findings, failed attempts, next steps, and references to recoverable details. Judge context reduction by subsequent correctness, retries, total cost, and latency.

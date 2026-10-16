@@ -1,19 +1,24 @@
 # Token Efficiency
 
-A skill that teaches coding agents to minimize token waste in all tool use, file reading, and data processing operations.
+A skill that helps coding agents reduce token waste in tool use, file reading, and data processing.
 
-Every byte of tool output is money and context window spent. This skill instills the habit of filtering, projecting, and truncating at the source — not dumping raw output and hoping for the best.
+Filter and query data before it enters context, while preserving the evidence needed to finish correctly. The goal is lower total cost and time to a verified result, accounting for retries and coordination as well as output size.
 
 > **Sunset notice:** This skill exists because current coding agents haven't yet internalized efficient tool use. As models improve and these practices become default behavior, this skill will be discontinued.
 
 ## What it covers
 
 - Structured query tools (`jq`, `yq`, `awk`) over dump-and-read
-- Precision search (`ast-grep`, `rg`) over broad text search
-- Git summary-first workflows (`--stat`, `--name-only`)
-- Output noise suppression (quiet flags, `NO_COLOR`, selective reads)
-- Hash-based change detection over re-reading files
-- Coreutils over Python for simple transforms
+- Targeted search (`ast-grep`, `rg`) and selective file reads
+- Git summaries for broad diffs (`--stat`, `--name-only`)
+- Output noise suppression while preserving errors and exit status
+- Script-based generation and conditional parallelism or delegation
+- Completion notifications and lightweight change detection
+- Cache-aware context management with recoverable references
+
+## How it loads
+
+Claude Code and Cursor session hooks inject a short [core checklist](skills/token-efficiency/CORE.md). The [full playbook](skills/token-efficiency/SKILL.md) remains available through skill discovery. Codex uses native skill discovery; the Gemini context include and OpenCode plugin load the full playbook.
 
 ## Installation
 
